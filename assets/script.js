@@ -57,14 +57,33 @@ document.querySelector("#start").addEventListener("click", () => {
     currentQuestion = 0;
     score = 0;
     document.querySelector("#start").style.display = "none";
+    document.querySelector("#next").style.display = "block";
+    document.querySelector("#score").style.display = "none";
     showQuiz();
 })
 function showQuiz() {
     let current = questions[currentQuestion];
-    document.querySelector("#question").textContent=current.question;
-    for (let index = 0; index < radios.length; index++) {  
-        radios[index].value=current.options[index];
-        radios[index].nextElementSibling.textContent=current.options[index]
+    document.querySelector("#question").textContent = current.question;
+    for (let index = 0; index < radios.length; index++) {
+        radios[index].value = current.options[index];
+        radios[index].nextElementSibling.textContent = current.options[index]
     }
-    
 }
+document.querySelector("#next").addEventListener("click", () => {
+    let selected = document.querySelector('input[name="answer"]:checked').value
+    console.log(selected);
+    if (selected == questions[currentQuestion].correctAnswer) {
+        score++
+    }
+    currentQuestion++
+    if (currentQuestion < questions.length) {
+        showQuiz();
+    }
+    else {
+        document.querySelector("#score").textContent = "Score:" + score + "/5";
+        document.querySelector("#next").style.display = "none";
+        document.querySelector("#start").style.display = "block";
+        document.querySelector("#score").style.display = "block";
+    }
+
+})
